@@ -1,7 +1,7 @@
 -- create table in postgresql database from model
 local cjson_encode = require "cjson.safe".encode
 
-local version = '1.0'
+local version = '1.1'
 
 local function dict(a, b)
     local t = {}
@@ -57,7 +57,7 @@ local function serialize_defaut(val)
 end
 
 local function get_table_defination(model)
-    local escn = model.sql.escape_name
+    local escn = model.get_sql().escape_name
     local joiner = ',\n    '
     local field_options = {indexes={}}
     local fields = {}
@@ -142,7 +142,7 @@ local function drop_table(kwargs)
             return nil, err
         end
     end
-    local escape_name = kwargs.model.sql.escape_name(kwargs.model.table_name)
+    local escape_name = kwargs.model.get_sql().escape_name(kwargs.model.table_name)
     local res, err = kwargs.query('DROP TABLE IF EXISTS '..escape_name)
     if not res then
         return nil, err
